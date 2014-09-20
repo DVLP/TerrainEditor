@@ -441,36 +441,20 @@ function LoadQueryParams() {
 }
 
 function convertEventToCanvas(e) {
-    var myObject = WebGL.gviewer.canvas;
+
     var posx, posy;
     if (e.pageX || e.pageY) {
-	posx = e.pageX;
-	posy = e.pageY;
+        posx = e.pageX;
+        posy = e.pageY;
     } else if (e.clientX || e.clientY) {
-	posx = e.clientX + document.body.scrollLeft
-		+ document.documentElement.scrollLeft;
-	posy = e.clientY + document.body.scrollTop
-		+ document.documentElement.scrollTop;
+        posx = e.clientX + document.body.scrollLeft
+            + document.documentElement.scrollLeft;
+        posy = e.clientY + document.body.scrollTop
+            + document.documentElement.scrollTop;
     }
-
-    var divGlobalOffset = function(obj) {
-	var x = 0, y = 0;
-	x = obj.offsetLeft;
-	y = obj.offsetTop;
-	var body = document.getElementsByTagName('body')[0];
-	while (obj.offsetParent && obj != body) {
-	    x += obj.offsetParent.offsetLeft;
-	    y += obj.offsetParent.offsetTop;
-	    obj = obj.offsetParent;
-	}
-	return [ x, y ];
-    };
-    // posx and posy contain the mouse position relative to the document
-    // Do something with this information
-    var globalOffset = divGlobalOffset(myObject);
-    posx = posx - globalOffset[0];
-    posy = myObject.height - (posy - globalOffset[1]);
-
+    posy = window.innerHeight - posy;
+    posx *= scale;
+    posy *= scale;
     var ret = [ WebGL.gOldX - posx, WebGL.gOldY - posy , posx , posy];
     WebGL.gOldX = posx;
     WebGL.gOldY = posy;
@@ -503,7 +487,7 @@ function SwapUpVector() {
 }
 var drawtarget = "Height";
 function Mousedown(x, y,button) {
-    
+
     
     WebGL.gCamera.removeChild(WebGL.GodRaysAccumulatorCam);
     
@@ -545,7 +529,7 @@ function Mousedown(x, y,button) {
 var aoframecount = 0;
 var grframecount = 0;
 function Mouseup(x, y,button) {
-    
+
     WebGL.gviewer.view.removeChild(WebGL.PickBufferCam);
     grframecount = 0;
     if(AtmosphereShadowsAreOn()) WebGL.gCamera.addChild(WebGL.GodRaysAccumulatorCam);
@@ -597,7 +581,7 @@ function RotateCamera(x, y) {
 
 }
 function Mousemove(x, y) {
-    
+
     if(WebGL.gMouseDown)
 	WebGL.MouseMoving = true;
     else

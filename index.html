@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <!--
 Copyright 2012 Rob Chadwick (rchadwic@gmail.com)
 This work is licensed under a Creative Commons 
@@ -786,30 +787,32 @@ $(document).ready(function(){
 	        "icons" : { "maximize" : "ui-icon-arrow-4-diag" }
 	      });
 	$("#BrushOptionHelp").dialog({title:"Brush Options Help",position:'center',width:'400px',height:'auto',modal:true,autoOpen: false});
-	$("#intro").dialog({title:"About",position:'center',width:'400px',height:'auto',modal:true,autoOpen: true});
+	//$("#intro").dialog({title:"About",position:'center',width:'400px',height:'auto',modal:true,autoOpen: true});
 	
-	$("#loading").dialog({title:"Loading",position:'center',width:'auto',height:'auto',modal:true,autoOpen: true});
-	
-	document.getElementById("WebGLCanvas").width = $(window).width();
-	document.getElementById("WebGLCanvas").height = $(window).height();
-	
+	//$("#loading").dialog({title:"Loading",position:'center',width:'auto',height:'auto',modal:true,autoOpen: true});
+
+    window.scale = .25;
+
+	document.getElementById("WebGLCanvas").width = $(window).width() * scale;
+	document.getElementById("WebGLCanvas").height = $(window).height() * scale;
+    document.getElementById("WebGLCanvas").style.zoom = 1/scale;
 	$(window).resize(function() {
-	    document.getElementById("WebGLCanvas").width = $(window).width();
-		document.getElementById("WebGLCanvas").height = $(window).height();
+	    document.getElementById("WebGLCanvas").width = $(window).width() * scale;
+		document.getElementById("WebGLCanvas").height = $(window).height() * scale;
 		
-		WebGL.gCamera.setViewport(new osg.Viewport(0, 0, $(window).width(), $(window).height()));
+		WebGL.gCamera.setViewport(new osg.Viewport(0, 0, $(window).width() * scale, $(window).height() * scale));
 	  });
 	
-	initWebGL("file:///C:/Development\\HTML5Game\\Assets\\Models\\matv01_veh.json", false, "Y", 1.0  );
+	initWebGL("Assets/Models/matv01_veh.json", false, "Y", 1.0  );
 
 	window.setTimeout(function(){
-		
+
 		Mousedown(-1,-1, 1)
 	window.setTimeout(function(){
-		
+
 		Mouseup(-1,-1, 1)
-	},300);
-},300);
+	},0);
+},0);
 	
 });
 </script>
@@ -927,7 +930,6 @@ $(document).ready(function(){
 		</div>
 		</div>
 	</div>
-<div id="intro">An editor for height map terrains by Rob Chadwick (rchadwic@gmail.com). This experiment uses WebGL for rendering the height field, and also for the editing operations. The rendering pipeline uses the GPU to accelerate raytracing for soft shadows, ambient occlusion, global illumination and volumetric atmosphere shadows. The height map generates tangent space in a shader, and uses texture atlases for diffuse and normal mapping. The diffuse lighting term is supplied by precomputed spherical harmonics. All operations use floating point values packed into RGBA textures, so it should not require any special WebGL extensions. </br> Use the right mouse button and wheel to navigate, and the left button to edit. Buffers will be redrawn on mouseup. The samples for the raytraced effects accumulate over time, and should be nice and smooth after 30 seconds or so. </div>
 <div id="loading"><img src="./images/loading2.gif"></img></div>
 </body>
 
